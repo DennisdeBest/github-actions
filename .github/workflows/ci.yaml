@@ -1,0 +1,29 @@
+name: check-first-commit
+
+on:
+    push:
+        branches:
+            - 'master'
+
+env:
+    FIRST_COMMIT: false
+jobs:
+    check:
+        runs-on: ubuntu-latest
+
+        steps:
+            -   name: Checkout code
+                id: first_commit
+                uses: dennisdebest/first-commit-action@develop
+
+            -   name: If is not first commit
+                if: steps.first_commit.outputs.isFirstCommit == 'false'
+                run: |
+                    # Your commands here
+                    echo "This runs if it's not the first commit."
+
+            -   name: If it is the first commit
+                if: steps.first_commit.outputs.isFirstCommit == 'true'
+                run: |
+                    # Your commands here
+                    echo "This runs if it is the first commit."
